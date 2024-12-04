@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     },
   ],
   openGraph: {
-    title: "Tipo de Cambio del Dólar en Argentina",
+    title: "Cotización del Dólar",
     description:
       "Consulta los tipos de cambio del dólar en Argentina, incluyendo el dólar oficial, blue, MEP, contado con liquidación y más. Información actualizada en tiempo real.",
     type: "website",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tipo de Cambio del Dólar en Argentina",
+    title: "Cotización del Dólar",
     description:
       "Consulta los tipos de cambio del dólar en Argentina, incluyendo el dólar oficial, blue, MEP, contado con liquidación y más. Información actualizada en tiempo real.",
   },
