@@ -43,15 +43,26 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Cambio Dólar Argentina",
     locale: "es_AR",
+    images: [
+      {
+        url: "https://cotizacion-dolar-tau.vercel.app/android-chrome-512x512.png",
+        width: 1200,
+        height: 630,
+        alt: "Secret Santa app preview image",
+        type: "image/jpeg",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Cotización del Dólar",
     description:
       "Consulta los tipos de cambio del dólar en Argentina, incluyendo el dólar oficial, blue, MEP, contado con liquidación y más. Información actualizada en tiempo real.",
+    images: ["https://cotizacion-dolar-tau.vercel.app/android-chrome-512x512.png"],
   },
   icons: {
     icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
 };
 
