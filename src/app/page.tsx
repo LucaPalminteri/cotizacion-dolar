@@ -1,59 +1,26 @@
-"use client";
+import Home from "@/components/Home";
+import { fetchDollarRates, fetchHistoricalRates } from "@/data/api";
+import { getLastNDays } from "@/utils/date";
 
-import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
-import { fetchDollarRates } from "@/lib/api";
-import { DollarRate } from "@/lib/types";
-import { CurrencyHeader } from "@/components/currency-header";
-import { CurrencyGrid } from "@/components/currency-grid";
-import { ErrorMessage } from "@/components/error-message";
+// TODO: Create calculator feature
+// TODO: Fetch only the last day, not the whole week
+const DAYS_TO_COMPARE = 7;
 
-export default function Home() {
-  const [rates, setRates] = useState<DollarRate[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export default async function Page() {
+  const currentRates = await fetchDollarRates();
+  const dates = getLastNDays(DAYS_TO_COMPARE);
+  const historicalPromises = currentRates.map(async (rate) => {
+    const casa = rate.code.toLowerCase();
+    const history = await fetchHistoricalRates(casa, dates);
+    return [casa, history] as const;
+  });
 
-  const fetchRates = async () => {
-    try {
-      setLoading(true);
-      const data = await fetchDollarRates();
-      setRates(data);
-      setError(null);
-    } catch (err) {
-      console.log(err);
-      setError("Error al cargar los datos. Por favor, intente nuevamente.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchRates();
-  }, []);
+  const historicalResults = await Promise.all(historicalPromises);
+  const historicalMap = Object.fromEntries(historicalResults);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-secondary/20">
-      <main className="flex-grow container mx-auto px-4 py-12">
-        <CurrencyHeader />
-        <ErrorMessage message={error} />
-
-        {loading ? (
-          <div className="flex justify-center items-center mt-24">
-            <Loader2 className="h-12 w-12 animate-spin text-primary" />
-          </div>
-        ) : (
-          <CurrencyGrid rates={rates} />
-        )}
-      </main>
-
-      <footer className="mt-auto py-6 text-center">
-        <p className="text-sm text-muted-foreground">
-          Datos proporcionados por{" "}
-          <a href="https://dolarapi.com/docs/" target="blank" className="text-primary font-medium">
-            DolarAPI
-          </a>
-        </p>
-      </footer>
+    <div>
+      <Home rates={currentRates} historicalData={historicalMap} />
     </div>
   );
 }
